@@ -37,7 +37,7 @@ public class EventBus {
         }
         for (Iterator<EventHandlerHolder> it = eventHandlerHolders.iterator(); it.hasNext();) {
             EventHandlerHolder holder = it.next();
-            if (holder.getReference() == handler) {
+            if (holder.getListenerReference() == handler) {
                 it.remove();
             }
         }
@@ -70,10 +70,58 @@ public class EventBus {
         @Override
         public void run() {
             try {
-                holder.getMethod().invoke(holder.getReference(), event);
+                holder.getListenerMethod().invoke(holder.getListenerReference(), event);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+        }
+    }
+
+    /**
+     * Helper class which binds event class with appropriate handler method.
+     */
+    static final class EventHandlerHolder {
+
+        /**
+         * Reference of the class which contains handler methods.
+         */
+        private final Object listenerReference;
+        /**
+         * Method of the
+         * <code>listenerReference</code> which is marked by
+         * <code>EventHandler</code> annotation.
+         *
+         * @see EventHandler
+         */
+        private final Method listenerMethod;
+        /**
+         * Class type of the event.
+         */
+        private final Class eventClass;
+
+        public EventHandlerHolder(Object listenerReference, Method listenerMethod, Class eventClass) {
+            this.listenerReference = listenerReference;
+            this.listenerMethod = listenerMethod;
+            this.eventClass = eventClass;
+        }
+
+        public Class getEventClass() {
+            return eventClass;
+        }
+
+        public Method getListenerMethod() {
+            return listenerMethod;
+        }
+
+        public Object getListenerReference() {
+            return listenerReference;
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder(listenerReference.getClass().getName());
+            sb.append("#").append(listenerMethod.getName()).append("(").append(eventClass).append(")");
+            return sb.toString();
         }
     }
 }

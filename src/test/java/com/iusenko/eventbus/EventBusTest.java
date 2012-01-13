@@ -1,5 +1,6 @@
 package com.iusenko.eventbus;
 
+import com.iusenko.eventbus.EventBus.EventHandlerHolder;
 import java.util.Collection;
 import static junit.framework.Assert.*;
 import org.junit.Test;
@@ -82,8 +83,8 @@ public class EventBusTest {
     private boolean contains(Collection<EventHandlerHolder> holders, Object reference,
             String methodName, Class eventClass) {
         for (EventHandlerHolder holder : holders) {
-            if (holder.getReference() == reference && holder.getEventClass() == eventClass
-                    && holder.getMethod().getName().equals(methodName)) {
+            if (holder.getListenerReference() == reference && holder.getEventClass() == eventClass
+                    && holder.getListenerMethod().getName().equals(methodName)) {
                 return true;
             }
 

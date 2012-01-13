@@ -10,11 +10,10 @@ public class Main {
         EventBus.subscribe(handler);
         EventBus.publish("hello");
         EventBus.publish(new Integer(3));
-        EventBus.publish(Boolean.TRUE);// thre is no handler for this
+        EventBus.publish(Boolean.TRUE);// thre is no handler for this type
         EventBus.unsubscrube(handler);
-        EventBus.publish("hello"); // handler is already unregistered
+        EventBus.publish("hello"); // handler has been unregistered
     }
-
     static Object handler = new Object() {
 
         @EventHandler
