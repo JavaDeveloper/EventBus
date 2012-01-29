@@ -43,6 +43,10 @@ public class EventBus {
         }
     }
 
+    public static void unsubscribeAll() {
+        eventHandlerHolders.clear();
+    }
+
     public static void publish(Object event) {
         if (event == null) {
             throw new IllegalArgumentException();
